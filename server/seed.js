@@ -33,13 +33,8 @@ const users = [
 ];
 
 const seed = () =>
-  Promise.all(users.map(user => User.create(user))).then(() =>
-    Promise.all(
-      pages.map(page => {
-        page.authorId = users[Math.floor(Math.random() * users.length)].id;
-        return Page.create(page);
-      })
-    )
+  Promise.all(pages.map(page => Page.create(page))).then(() =>
+    Promise.all(users.map(user => User.create(user)))
   );
 
 const main = () => {

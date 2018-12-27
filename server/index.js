@@ -1,5 +1,5 @@
 // server entry point
-const app = require('./server');
+const app = require('./app');
 const db = require('./db/db');
 const port = process.env.PORT || 1337; // TODO change to 3000
 
