@@ -8,7 +8,7 @@
     "start": "npm run start-server & npm run build-watch",
     "start-server": "nodemon server -w server",
     "build-watch": "webpack -w",
-    "seed": "node seed.js"
+    "seed": "node ./server/seed.js"
   },
   "author": "Molly C. Clarke",
   "license": "ISC",

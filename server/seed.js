@@ -1,6 +1,6 @@
-const { db } = require('./index'); // this way as well const { db, Page, User } ?
-const Page = require('./models/page');
-const User = require('./models/user');
+const { db } = require('./db/index'); // this way as well const { db, Page, User } ?
+const Page = require('./db/models/page');
+const User = require('./db/models/user');
 
 const pages = [
   {
@@ -33,8 +33,13 @@ const users = [
 ];
 
 const seed = () =>
-  Promise.all(pages.map(page => Page.create(page))).then(() =>
-    Promise.all(users.map(user => User.create(user)))
+  Promise.all(users.map(user => User.create(user))).then(() =>
+    Promise.all(
+      pages.map(page => {
+        page.authorId = users[Math.floor(Math.random() * users.length)].id;
+        return Page.create(page);
+      })
+    )
   );
 
 const main = () => {
