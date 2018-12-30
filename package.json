@@ -13,6 +13,8 @@
   "author": "Molly C. Clarke",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "morgan": "^1.9.1",
