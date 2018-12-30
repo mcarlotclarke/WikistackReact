@@ -11,13 +11,14 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// fix eager loading below
 router.get('/:slug', async (req, res, next) => {
   try {
     const page = await Page.findOne({
       where: {
         slug: req.params.slug
-      },
-      include: [{ model: User, as: 'author' }]
+      }
+      // include: [{ model: User, as: 'author' }]
     });
     if (page === null) {
       res.sendStatus(404);

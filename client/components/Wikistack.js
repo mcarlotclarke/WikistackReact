@@ -4,6 +4,7 @@ import axios from 'axios';
 import Write from './Write';
 import PageList from './PageList';
 import Users from './Users';
+import SinglePage from './SinglePage';
 
 export default class Wikistack extends Component {
   constructor(props) {
@@ -19,11 +20,11 @@ export default class Wikistack extends Component {
   }
 
   async getPages() {
-    console.log('fetching');
+    // console.log('fetching');
     try {
       const { data } = await axios.get('/api/wiki');
       this.setState({ pages: data });
-      console.log('This is the State', this.state);
+      // console.log('This is the State', this.state);
     } catch (err) {
       console.error(err);
     }
@@ -64,6 +65,7 @@ export default class Wikistack extends Component {
         <hr id="topline" />
         <div id="wiki-titles">
           <PageList pages={this.state.pages} />
+          {/* <SinglePage pages={this.state.pages} /> */}
         </div>
       </div>
     );

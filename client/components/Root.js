@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import Wikistack from './Wikistack';
 import Write from './Write';
+import SinglePage from './SinglePage';
 
 const Root = () => {
   return (
@@ -23,6 +24,7 @@ const Root = () => {
             <Switch>
               <Route exact path="/wiki" component={Wikistack} />
               <Route exact path="/wiki/add" component={Write} />
+              <Route exact path="/wiki/:slug" component={SinglePage} />
             </Switch>
           </main>
           <footer>
