@@ -1,7 +1,9 @@
 // home page
 import React, { Component } from 'react';
-import Write from './Write';
 import axios from 'axios';
+import Write from './Write';
+import PageList from './PageList';
+import Users from './Users';
 
 export default class Wikistack extends Component {
   constructor(props) {
@@ -10,6 +12,21 @@ export default class Wikistack extends Component {
       pages: [],
       users: []
     };
+  }
+
+  componentDidMount() {
+    this.getPages();
+  }
+
+  async getPages() {
+    console.log('fetching');
+    try {
+      const { data } = await axios.get('/api/wiki');
+      this.setState({ pages: data });
+      console.log('This is the State', this.state);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   // this is a good place/time to make ajax/async requests, attach listeners, etc.
@@ -39,13 +56,15 @@ export default class Wikistack extends Component {
   // }
 
   // search()
-  // getPages()
 
   render() {
     return (
       <div className="container">
-        <div className="page-title">Index</div>
+        <div className="page-title">Pages</div>
         <hr id="topline" />
+        <div id="wiki-titles">
+          <PageList pages={this.state.pages} />
+        </div>
       </div>
     );
   }

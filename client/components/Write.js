@@ -40,6 +40,8 @@ export default class Write extends Component {
     return (
       // prettier-ignore
       <form onSubmit={this.handleSubmit}>
+            <div className="page-title">Add Page</div>
+            <hr id="topline" />
         <label>
           Author's name
           <input type="text" name="name" value={this.state.name} onChange={this.handleChange} />
