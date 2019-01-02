@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 
 export default class Write extends Component {
   constructor(props) {
@@ -9,8 +9,8 @@ export default class Write extends Component {
       email: '',
       title: '',
       content: '',
-      status: '',
-      tags: []
+      status: 'open',
+      tags: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,18 +22,26 @@ export default class Write extends Component {
     });
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
     // this.props.addPage(this.state);
-    this.setState({
-      // this is where/how we clear the state after submit
-      name: '',
-      email: '',
-      title: '',
-      content: '',
-      status: '',
-      tags: []
-    });
+    // add try catch
+    const response = await axios.post('/api/wiki', this.state);
+    console.log(response);
+    if (response.status === 201) {
+      this.setState({
+        // this is where/how we clear the state after submit
+        name: '',
+        email: '',
+        title: '',
+        content: '',
+        status: 'open',
+        tags: ''
+      });
+      this.props.history.push(`/wiki/${response.data.slug}`);
+    } else {
+      // call a method to display an error message - create that component
+    }
   }
 
   render() {

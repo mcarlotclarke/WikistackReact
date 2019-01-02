@@ -41,6 +41,7 @@ Page.beforeValidate(page => {
 });
 
 const { Op } = Sequelize;
+
 // class method
 Page.findByTag = function(tag) {
   return this.findAll({
@@ -51,15 +52,15 @@ Page.findByTag = function(tag) {
 };
 
 // instance method
-Page.prototype.findSimilar = function() {
-  return Page.findAll({
-    where: {
-      id: {
-        $ne: this.id
-      },
-      tags: { $overlap: this.tags }
-    }
-  });
-};
+// Page.prototype.findSimilar = function() {
+//   return Page.findAll({
+//     where: {
+//       id: {
+//         $ne: this.id
+//       },
+//       tags: { $overlap: this.tags }
+//     }
+//   });
+// };
 
 module.exports = Page;

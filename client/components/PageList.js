@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const PageList = props => {
-  console.log('Pages from PageList', props);
   return (
     <div>
       {props.pages.map(page => (

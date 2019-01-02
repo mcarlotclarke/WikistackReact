@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const Page = require('../db/models/page');
-const User = require('../db/models/user');
+const { Page, User } = require('../db'); // remember that tricky thing that happened with import, must import index.js
 
+// all pages
 router.get('/', async (req, res, next) => {
   try {
     const pages = await Page.findAll();
@@ -11,29 +11,30 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// fix eager loading below
+router.get('/search', async (req, res, next) => {
+  try {
+    console.log('WHERE ARE YOU?, ', req.query.search);
+    const pages = await Page.findByTag(req.query.search);
+    res.json(pages);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// one page by slug
 router.get('/:slug', async (req, res, next) => {
   try {
     const page = await Page.findOne({
       where: {
         slug: req.params.slug
-      }
-      // include: [{ model: User, as: 'author' }]
+      },
+      include: [{ model: User, as: 'author' }]
     });
     if (page === null) {
       res.sendStatus(404);
     } else {
       res.json(page);
     }
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.get('/search', async (req, res, next) => {
-  try {
-    const pages = await Page.findByTag(req.query.search);
-    res.json(pages);
   } catch (err) {
     next(err);
   }
@@ -72,24 +73,24 @@ router.get('/:slug/edit', async (req, res, next) => {
   }
 });
 
-router.get('/:slug/similar', async (req, res, next) => {
-  try {
-    const page = await Page.findOne({
-      where: {
-        slug: req.params.slug
-      }
-    });
+// router.get('/:slug/similar', async (req, res, next) => {
+//   try {
+//     const page = await Page.findOne({
+//       where: {
+//         slug: req.params.slug
+//       }
+//     });
 
-    if (page === null) {
-      res.sendStatus(404);
-    } else {
-      const similar = await page.findSimilar();
-      res.json(similar);
-    }
-  } catch (err) {
-    next(err);
-  }
-});
+//     if (page === null) {
+//       res.sendStatus(404);
+//     } else {
+//       const similar = await page.findSimilar();
+//       res.json(similar);
+//     }
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 // adds a page
 router.post('/', async (req, res, next) => {
@@ -102,7 +103,7 @@ router.post('/', async (req, res, next) => {
     });
     const newPage = await Page.create(req.body);
     newPage.setAuthor(user);
-    res.json(newPage);
+    res.status(201).json(newPage);
   } catch (err) {
     next(err);
   }

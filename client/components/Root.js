@@ -25,6 +25,7 @@ const Root = () => {
               <Route exact path="/wiki" component={Wikistack} />
               <Route exact path="/wiki/add" component={Write} />
               <Route exact path="/wiki/:slug" component={SinglePage} />
+              <Route exact path="/wiki/:slug/similar" component={Wikistack} />
             </Switch>
           </main>
           <footer>

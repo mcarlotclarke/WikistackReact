@@ -1,6 +1,5 @@
 const { db } = require('./db/index'); // this way as well const { db, Page, User } ?
-const Page = require('./db/models/page');
-const User = require('./db/models/user');
+const { Page, User } = require('./db');
 
 const pages = [
   {

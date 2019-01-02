@@ -11,20 +11,37 @@ export default class Wikistack extends Component {
     super(props);
     this.state = {
       pages: [],
-      users: []
+      users: [],
+      search: ''
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.search = this.search.bind(this);
   }
 
-  componentDidMount() {
-    this.getPages();
+  async componentDidMount() {
+    // if we came in through the route with the slug:
+    if (this.props.match.params.slug) {
+      // 1. get page from slug axios.get slug
+      const response = await axios.get(
+        `/api/wiki/${this.props.match.params.slug}`
+      );
+      // 2. get first tag from page we get back
+      const firstTag = response.data.tags[0];
+      // 3. fake a search:
+      // 3.a this.setState({search: page.tags[0]})
+      this.setState({ search: firstTag });
+      // 3.b call search function
+      this.search();
+    } else {
+      //otherwise load all pages
+      this.getPages();
+    }
   }
 
   async getPages() {
-    // console.log('fetching');
     try {
       const { data } = await axios.get('/api/wiki');
       this.setState({ pages: data });
-      // console.log('This is the State', this.state);
     } catch (err) {
       console.error(err);
     }
@@ -56,12 +73,34 @@ export default class Wikistack extends Component {
   //   }
   // }
 
-  // search()
+  async search() {
+    const response = await axios.get(
+      `/api/wiki/search?search=${this.state.search}`
+    );
+    this.setState({ pages: response.data });
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value // event.target === input in our form
+    });
+  }
 
   render() {
     return (
       <div className="container">
         <div className="page-title">Pages</div>
+        <div>
+          <input
+            type="text"
+            name="search"
+            value={this.state.search}
+            onChange={this.handleChange}
+          />
+          <button type="button" onClick={this.search}>
+            Search
+          </button>
+        </div>
         <hr id="topline" />
         <div id="wiki-titles">
           <PageList pages={this.state.pages} />
