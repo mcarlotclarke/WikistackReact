@@ -8,6 +8,9 @@ import {
 import Wikistack from './Wikistack';
 import Write from './Write';
 import SinglePage from './SinglePage';
+import Users from './Users';
+import SingleUser from './SingleUser';
+import EditPage from './EditPage';
 
 const Root = () => {
   return (
@@ -26,6 +29,9 @@ const Root = () => {
               <Route exact path="/wiki/add" component={Write} />
               <Route exact path="/wiki/:slug" component={SinglePage} />
               <Route exact path="/wiki/:slug/similar" component={Wikistack} />
+              <Route exact path="/users" component={Users} />
+              <Route exact path="/user/:id" component={SingleUser} />
+              <Route path="/wiki/edit/:slug" component={EditPage} />
             </Switch>
           </main>
           <footer>

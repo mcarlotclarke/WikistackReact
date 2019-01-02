@@ -13,7 +13,6 @@ router.get('/', async (req, res, next) => {
 
 router.get('/search', async (req, res, next) => {
   try {
-    console.log('WHERE ARE YOU?, ', req.query.search);
     const pages = await Page.findByTag(req.query.search);
     res.json(pages);
   } catch (err) {
@@ -40,8 +39,7 @@ router.get('/:slug', async (req, res, next) => {
   }
 });
 
-// shouldn't this be router.delete
-router.get('/:slug/delete', async (req, res, next) => {
+router.delete('/:slug', async (req, res, next) => {
   try {
     await Page.destroy({
       where: {
@@ -54,6 +52,21 @@ router.get('/:slug/delete', async (req, res, next) => {
   }
 });
 
+// shouldn't this be router.delete
+// router.get('/:slug/delete', async (req, res, next) => {
+//   try {
+//     await Page.destroy({
+//       where: {
+//         slug: req.params.slug
+//       }
+//     });
+//     res.send('Deleted');
+//   } catch (err) {
+//     next(err);
+//   }
+// });
+
+// can I use this route?
 router.get('/:slug/edit', async (req, res, next) => {
   try {
     const page = await Page.findOne({
@@ -112,7 +125,7 @@ router.post('/', async (req, res, next) => {
 // updates a page
 router.put('/:slug', async (req, res, next) => {
   try {
-    const update = await Page.update(req.body, {
+    const [success, update] = await Page.update(req.body, {
       where: {
         slug: req.params.slug
       },

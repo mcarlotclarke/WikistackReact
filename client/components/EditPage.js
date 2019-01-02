@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-export default class Write extends Component {
+export default class EditPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,6 +16,25 @@ export default class Write extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  async componentDidMount() {
+    try {
+      const { data } = await axios.get(
+        `/api/wiki/${this.props.match.params.slug}`
+      );
+      this.setState({
+        name: data.author.name,
+        email: data.author.email,
+        title: data.title,
+        content: data.content,
+        status: data.status,
+        tags: data.tags
+      });
+      console.log(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value // event.target === input in our form
@@ -25,7 +44,10 @@ export default class Write extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     try {
-      const response = await axios.post('/api/wiki', this.state);
+      const response = await axios.put(
+        `/api/wiki/${this.props.match.params.slug}`,
+        this.state
+      );
       if (response.status === 201) {
         this.setState({
           // this is where/how we clear the state after submit

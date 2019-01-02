@@ -1,10 +1,8 @@
 // home page
 import React, { Component } from 'react';
 import axios from 'axios';
-import Write from './Write';
 import PageList from './PageList';
 import Users from './Users';
-import SinglePage from './SinglePage';
 
 export default class Wikistack extends Component {
   constructor(props) {
@@ -21,7 +19,7 @@ export default class Wikistack extends Component {
   async componentDidMount() {
     // if we came in through the route with the slug:
     if (this.props.match.params.slug) {
-      // 1. get page from slug axios.get slug
+      // 1. get page from slug axios.get
       const response = await axios.get(
         `/api/wiki/${this.props.match.params.slug}`
       );
@@ -35,6 +33,7 @@ export default class Wikistack extends Component {
     } else {
       //otherwise load all pages
       this.getPages();
+      // this.getUsers();
     }
   }
 
@@ -46,32 +45,6 @@ export default class Wikistack extends Component {
       console.error(err);
     }
   }
-
-  // this is a good place/time to make ajax/async requests, attach listeners, etc.
-  // async componentDidMount() {
-  //   try {
-  //     const res = await axios.get('/api/wiki');
-  //     const pages = res.data;
-  //     console.log(pages);
-  //   } catch (err) {
-  //     console.log('There was a problem getting stuff!');
-  //   }
-  // const users = axios.get('/api/users');
-  // const response = users.data
-  // this.setState({ pages, response });
-  // }
-
-  // async addPage(page) {
-  //   try {
-  //     const newPage = await axios.post('/api/wiki', page);
-  //     // this.setState({
-  //     //   pages: [...this.state.pages, newPage]
-  //     //   // users: [...this.state.users, newPage]
-  //     // });
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }
 
   async search() {
     const response = await axios.get(
@@ -104,7 +77,7 @@ export default class Wikistack extends Component {
         <hr id="topline" />
         <div id="wiki-titles">
           <PageList pages={this.state.pages} />
-          {/* <SinglePage pages={this.state.pages} /> */}
+          {/* <Users users={this.state.users} /> */}
         </div>
       </div>
     );

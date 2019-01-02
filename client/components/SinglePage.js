@@ -11,15 +11,24 @@ export default class SinglePage extends Component {
         tags: []
       }
     };
+    this.deletePage = this.deletePage.bind(this);
   }
 
   async componentDidMount() {
     try {
-      const storyResponse = await axios.get(
+      const response = await axios.get(
         `/api/wiki/${this.props.match.params.slug}`
       );
-      console.log('STORY RESPONSE', storyResponse);
-      this.setState({ page: storyResponse.data });
+      this.setState({ page: response.data });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async deletePage(slug) {
+    try {
+      const response = await axios.delete(`/api/wiki/${slug}`);
+      this.props.history.push(`/wiki`);
     } catch (err) {
       console.error(err);
     }
@@ -27,11 +36,12 @@ export default class SinglePage extends Component {
 
   render() {
     const page = this.state.page;
+
     return (
       <div>
         <h2>{page.title}</h2>
         <h3>
-          by <Link to={`/users/${page.authorId}`}>{page.author.name}</Link>
+          by <Link to={`/user/${page.authorId}`}>{page.author.name}</Link>
         </h3>
         <p className="page-content">{page.content}</p>
         <ul>
@@ -39,7 +49,24 @@ export default class SinglePage extends Component {
             <li key={pg}>{pg}</li>
           ))}
         </ul>
-        {/* <p className="page-tags">{page.tags}</p> */}
+        <div>
+          <button
+            type="submit"
+            className="edit-button"
+            onClick={() => {
+              this.props.history.push(`/wiki/edit/${page.slug}`);
+            }}
+          >
+            Edit this page
+          </button>
+          <button
+            type="button"
+            className="delete-button"
+            onClick={this.deletePage.bind(null, page.slug)}
+          >
+            Delete this page
+          </button>
+        </div>
       </div>
     );
   }
