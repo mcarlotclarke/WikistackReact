@@ -48,7 +48,9 @@ export default class EditPage extends Component {
         `/api/wiki/${this.props.match.params.slug}`,
         this.state
       );
-      if (response.status === 201) {
+      console.log(response);
+      if (response.status === 200) {
+        // bc it is up update
         this.setState({
           // this is where/how we clear the state after submit
           name: '',

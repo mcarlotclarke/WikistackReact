@@ -16,7 +16,36 @@ export default class Wikistack extends Component {
     this.search = this.search.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    console.log('Mounted');
+    this.findSimilar();
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log('did Update!');
+    if (this.props.location.pathname === prevProps.location.pathname) {
+      return;
+    }
+    this.findSimilar();
+  }
+
+  async getPages() {
+    try {
+      const { data } = await axios.get('/api/wiki');
+      this.setState({ pages: data });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async search() {
+    const response = await axios.get(
+      `/api/wiki/search?search=${this.state.search}`
+    );
+    this.setState({ pages: response.data });
+  }
+
+  async findSimilar() {
     // if we came in through the route with the slug:
     if (this.props.match.params.slug) {
       // 1. get page from slug axios.get
@@ -37,22 +66,6 @@ export default class Wikistack extends Component {
     }
   }
 
-  async getPages() {
-    try {
-      const { data } = await axios.get('/api/wiki');
-      this.setState({ pages: data });
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async search() {
-    const response = await axios.get(
-      `/api/wiki/search?search=${this.state.search}`
-    );
-    this.setState({ pages: response.data });
-  }
-
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value // event.target === input in our form
@@ -65,6 +78,7 @@ export default class Wikistack extends Component {
         <div className="page-title">Pages</div>
         <div>
           <input
+            className="search-bar"
             type="text"
             name="search"
             value={this.state.search}

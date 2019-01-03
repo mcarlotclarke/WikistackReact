@@ -125,13 +125,14 @@ router.post('/', async (req, res, next) => {
 // updates a page
 router.put('/:slug', async (req, res, next) => {
   try {
-    const [success, update] = await Page.update(req.body, {
+    // const [success, update]
+    const [numUpdated, [updatedPage]] = await Page.update(req.body, {
       where: {
         slug: req.params.slug
       },
       returning: true
     });
-    res.json(update);
+    res.json(updatedPage);
   } catch (err) {
     next(err);
   }

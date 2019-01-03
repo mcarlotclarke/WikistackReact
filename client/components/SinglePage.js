@@ -40,6 +40,9 @@ export default class SinglePage extends Component {
     return (
       <div>
         <h2>{page.title}</h2>
+        <div className="similar">
+          <Link to={`/wiki/${page.slug}/similar`}>(Similar)</Link>
+        </div>
         <h3>
           by <Link to={`/user/${page.authorId}`}>{page.author.name}</Link>
         </h3>

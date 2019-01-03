@@ -8,7 +8,12 @@ export default class SingleUser extends Component {
     this.state = {
       user: {
         name: '',
-        email: ''
+        email: '',
+        pages: [
+          {
+            title: ''
+          }
+        ]
       }
     };
   }
@@ -28,12 +33,14 @@ export default class SingleUser extends Component {
     const user = this.state.user;
     return (
       <div>
-        <h2>Pages written by {user.name}</h2>
-        {/* <ul>
-          {user.tags.map(pg => (
-            <li key={pg}>{pg}</li>
+        <h3>Pages written by {user.name}</h3>
+        <ul>
+          {user.pages.map((page, index) => (
+            <li key={index}>
+              <Link to={`/wiki/${page.slug}`}>{page.title}</Link>
+            </li>
           ))}
-        </ul> */}
+        </ul>
       </div>
     );
   }

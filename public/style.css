@@ -50,8 +50,12 @@ main {
 input {
   width: 100%;
   padding: 12px 20px;
-  margin: 12px 0;
+  margin: 10px 10px 10px 0px;
   box-sizing: border-box;
+}
+
+.search-bar {
+  width: 50%;
 }
 
 /* Buttons */
